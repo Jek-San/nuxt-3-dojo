@@ -16,67 +16,75 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="(registration, index) in registrations"
-          :key="registration.no_rawat"
-        >
+        <tr v-for="(item, index) in datas" :key="item.no_rawat">
           <td>{{ index + 1 }}</td>
-          <td>{{ registration.no_rawat }}</td>
-          <td>{{ registration.stts_daftar }}</td>
-          <td>{{ registration.nm_dokter }}</td>
-          <td>{{ registration.no_rkm_medis }}</td>
-          <td>{{ registration.nm_pasien }}</td>
-          <td>{{ registration.nm_poli }}</td>
-          <td>{{ registration.kd_pj }}</td>
+          <td>{{ item.no_rawat }}</td>
+          <td>{{ item.stts_daftar }}</td>
+          <td>{{ item.nm_dokter }}</td>
+          <td>{{ item.no_rkm_medis }}</td>
+          <td>{{ item.nm_pasien }}</td>
+          <td>{{ item.nm_poli }}</td>
+          <td>{{ item.kd_pj }}</td>
           <td>
             <div>
               <span
-                :style="{ color: getStatusColor(registration.status_task3) }"
+                :style="{ color: getStatusColor(item.status_task3) }"
+                @click.prevent.self="openModal(item.task3, 'task3')"
               >
-                Task 3: {{ registration.task3 || "N/A" }} </span
+                Task 3: {{ item.task3 || "N/A" }} </span
               ><br />
               <span
-                :style="{ color: getStatusColor(registration.status_task4) }"
+                :style="{ color: getStatusColor(item.status_task4) }"
+                @click.prevent.self="openModal(item.task4, 'task4')"
               >
-                Task 4: {{ registration.task4 || "N/A" }} </span
+                Task 4: {{ item.task4 || "N/A" }} </span
               ><br />
               <span
-                :style="{ color: getStatusColor(registration.status_task5) }"
+                :style="{ color: getStatusColor(item.status_task5) }"
+                @click.prevent.self="openModal(item.task5, 'task5')"
               >
-                Task 5: {{ registration.task5 || "N/A" }} </span
+                Task 5: {{ item.task5 || "N/A" }} </span
               ><br />
               <span
-                :style="{ color: getStatusColor(registration.status_task6) }"
+                :style="{ color: getStatusColor(item.status_task6) }"
+                @click.prevent.self="openModal(item.task6, 'task6')"
               >
-                Task 6: {{ registration.task6 || "N/A" }} </span
+                Task 6: {{ item.task6 || "N/A" }} </span
               ><br />
               <span
-                :style="{ color: getStatusColor(registration.status_task7) }"
+                :style="{ color: getStatusColor(item.status_task7) }"
+                @click.prevent.self="openModal(item.task7, 'task7')"
               >
-                Task 7: {{ registration.task7 || "N/A" }}
+                Task 7: {{ item.task7 || "N/A" }}
               </span>
             </div>
           </td>
           <td>
-            <!-- Placeholder for action buttons (e.g., Edit, Delete) -->
-            <button @click="editRegistration(registration.no_rawat)">
-              Edit
-            </button>
-            <button @click="deleteRegistration(registration.no_rawat)">
-              Delete
-            </button>
+            <button @click="kirimBerkas(item.no_rawat)">Kirim</button>
           </td>
         </tr>
       </tbody>
     </table>
+
+    <TimeModal
+      :visible="modalVisible"
+      :currentValue="currentTaskValue"
+      :taskName="currentTaskName"
+      @close="closeModal"
+    />
   </div>
 </template>
 
 <script>
+import TimeModal from "../../components/TimeModal.vue"
+
 export default {
+  components: {
+    TimeModal,
+  },
   data() {
     return {
-      registrations: [
+      datas: [
         {
           no_reg: "001",
           no_rawat: "2024/08/09/000001",
@@ -129,18 +137,25 @@ export default {
           task7: "2024-08-08 16:40:47",
           status_task7: "green",
         },
-
-        // ... (other objects from your JSON data)
       ],
+      modalVisible: false,
+      currentTaskValue: "",
+      currentTaskName: "",
     }
   },
   methods: {
-    editRegistration(no_rawat) {
-      alert(`Editing registration: ${no_rawat}`)
+    kirimBerkas(no_rawat) {
+      alert(`Kirim berkas: ${no_rawat}`)
     },
-    deleteRegistration(no_rawat) {
-      alert(`Deleting registration: ${no_rawat}`)
+    openModal(taskValue, taskName) {
+      this.currentTaskValue = taskValue
+      this.currentTaskName = taskName
+      this.modalVisible = true
     },
+    closeModal() {
+      this.modalVisible = false
+    },
+
     getStatusColor(status) {
       switch (status) {
         case "green":
