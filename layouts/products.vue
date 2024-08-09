@@ -15,6 +15,11 @@
         <li><NuxtLink to="/">Home</NuxtLink></li>
         <li><NuxtLink to="/about">About</NuxtLink></li>
         <li><NuxtLink to="/products">Products</NuxtLink></li>
+        <li>
+          <NuxtLink to="/monitoring-taskid" class="btn"
+            >Monitoring Task Id</NuxtLink
+          >
+        </li>
       </ul>
     </footer>
   </div>
